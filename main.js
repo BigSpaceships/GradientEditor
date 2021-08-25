@@ -16,5 +16,3 @@ window.onmousemove = function (event) {
 }
 
 let part1 = new ColorTab(null, 0, 0);
-
-console.log(part1)
