@@ -1,8 +1,5 @@
+name: Glitch Sync
 
-uses: kanadgupta/glitch-sync@master
-with:
-  project-id: '${{ secrets.projectId }}'
-  auth-token: '${{ secrets.authToken }}'
 on:
   push:
     branches:
