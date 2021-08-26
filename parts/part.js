@@ -35,8 +35,9 @@
    * @param {Number} y y position relative to the parent
    * @param {Array} shape array of data that has the additional shape data
    * @param {Function} setup function to call before we update the position and shape but after the element is created
+   * @param {Boolean} passClick wather the element should pass its clicks onto the parent
    */
-  constructor(parent, type, x, y, shape, setup = function () {}) {
+  constructor(parent, type, x, y, shape, setup = function () {}, passClick = false) {
     switch(type) {
       case "canvas":
         this.element = document.createElement("canvas")
@@ -51,6 +52,7 @@
     this.type = type;
     this.shape = shape;
     this.element.setAttribute("class", "tab");
+    this.passClick = passClick;
 
     setup(this);
 
@@ -88,8 +90,8 @@
         this.element.setAttribute("y1", this.getY());
         break;
       case "canvas":
-        this.element.style.left = this.getX();
-        this.element.style.top = this.getY();
+        this.element.style.left = this.getX() + "px";
+        this.element.style.top = this.getY() +"px";
         console.log(this.getX())
         break;
     }
@@ -164,7 +166,11 @@
    * called when the element is clicked 
    */
   onmousedown(event, element) {
-    currentObject = element;
+    if (this.passClick) {
+      this.parent.onmousedown(event, element);
+    } else {
+      currentObject = element;
+    }
   }
 
   /**
