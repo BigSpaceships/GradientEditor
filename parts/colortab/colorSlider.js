@@ -41,8 +41,4 @@ class ColorSlider extends Part{
     }
 
   }
-
-  offset(x, y) {
-    super.offset(x, y)
-  }
 }
