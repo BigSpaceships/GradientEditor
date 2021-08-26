@@ -11,9 +11,9 @@ class ColorSlider extends Part{
     }]));
     this.drawGradient()
 
-    this.addChild(new Part(this, "rect", 0, 0, [85, 15, 1], function setup(el) {
-      el.element.style.fill = 'rgba(0, 0, 0, 0)'
-    }, true))
+//    this.addChild(new Part(this, "rect", 0, 0, [85, 15, 1], function setup(el) {
+//      el.element.style.fill = 'rgba(0, 0, 0, 0)'
+//    }, true))
   }
 
   mouseMove(event) {
