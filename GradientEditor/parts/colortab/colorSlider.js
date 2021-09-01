@@ -5,15 +5,14 @@ class ColorSlider extends Part{
     this.colorType = type;
 
     let element = this;
-    
-    this.addChild(new Part(this, "canvas", 0, 0, [85, 15, function call() {
-      element.drawGradient.call(element)
-    }]));
-    this.drawGradient()
 
-//    this.addChild(new Part(this, "rect", 0, 0, [85, 15, 1], function setup(el) {
-//      el.element.style.fill = 'rgba(0, 0, 0, 0)'
-//    }, true))
+    this.sliderId = sliderid++;
+
+    this.setupLinearGradientDef();
+    
+    this.addChild(new Part(this, "rect", 0, 0, [85, 15, 0]));
+    this.children[0].element.style.fill = "url(#" + this.sliderId + this.colorType + ")";
+    this.addChild(new Part(this, "line", 85, 0, [0, 15]));
   }
 
   mouseMove(event) {
@@ -22,23 +21,36 @@ class ColorSlider extends Part{
     this.children[0].updatePart();
   }
 
-  drawGradient() {
-    let ctx = this.children[0].element.getContext("2d");
-
-    for (var x = 0; x < 85; x++) {
-      var rgb;
-      switch(this.colorType) {
-        case "red":
-          rgb = `rgb(${x*3}, ${this.parent.green}, ${this.parent.blue})`
-          break;
-      }
-
-      ctx.beginPath();
-      ctx.strokeStyle = rgb;
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, 15);
-      ctx.stroke();
+  updateGradient() {
+    switch (this.colorType) {
+      case "red":
+        this.linearGradientDef.children[0].setAttribute("stop-color", `rgb(${0}, ${this.parent.green}, ${this.parent.blue})`);
+        this.linearGradientDef.children[1].setAttribute("stop-color", `rgb(${255}, ${this.parent.green}, ${this.parent.blue})`);
+        break;
+      case "green":
+        this.linearGradientDef.children[0].setAttribute("stop-color", `rgb(${this.parent.red}, ${0}, ${this.parent.blue})`);
+        this.linearGradientDef.children[1].setAttribute("stop-color", `rgb(${this.parent.red}, ${255}, ${this.parent.blue})`);
+        break;
+      case "blue":
+        this.linearGradientDef.children[0].setAttribute("stop-color", `rgb(${this.parent.red}, ${this.parent.green}, ${0})`);
+        this.linearGradientDef.children[1].setAttribute("stop-color", `rgb(${this.parent.red}, ${this.parent.green}, ${255})`);
+        break;
     }
+  }
 
+  setupLinearGradientDef() {
+    this.linearGradientDef = document.createElementNS("http://www.w3.org/2000/svg", "linearGradient");
+    defs.appendChild(this.linearGradientDef);
+    this.linearGradientDef.setAttribute("id", this.sliderId + this.colorType);
+
+    let stop1 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
+    stop1.setAttribute("offset", "0%");
+    this.linearGradientDef.appendChild(stop1);
+    
+    let stop2 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
+    stop2.setAttribute("offset", "100%");
+    this.linearGradientDef.appendChild(stop2);
+
+    this.updateGradient();
   }
 }

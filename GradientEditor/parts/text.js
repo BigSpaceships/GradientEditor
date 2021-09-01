@@ -1,9 +1,9 @@
 class TextNode extends Part {
 
   constructor(parent, type, x, y, shape) {
-    super(parent, type, x, y, shape, function setup(element){
-      element.textNode = document.createTextNode(shape[0]);
-      element.element.appendChild(element.textNode);
+    super(parent, type, x, y, shape, function setup(){
+      this.textNode = document.createTextNode(shape[0]);
+      this.element.appendChild(this.textNode);
     })
   }
 

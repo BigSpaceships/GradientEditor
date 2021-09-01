@@ -1,5 +1,8 @@
 let main = document.getElementById("main");
 
+let defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+main.appendChild(defs);
+
 let height = window.innerHeight;
 let width = window.innerWidth;
 
@@ -15,4 +18,8 @@ window.onmousemove = function (event) {
   }
 }
 
-let part1 = new ColorTab(null, 0, 0);
+var slider;
+
+let sliderid = 0;
+
+let part1 = new ColorTab(undefined, 0, 0);

@@ -26,6 +26,17 @@
     return Number(this.y + this.parent.getY());
   }
 
+  /**
+   * @returns the total number of children of the element including itsleft
+   */
+  getTotalChildren() {
+    let z = 1;
+
+    this.children.forEach(child => {
+      z += child.getTotalChildren();
+    });
+    return z;
+  }
 
   /**
    * Creates an element
@@ -54,7 +65,7 @@
     this.element.setAttribute("class", "tab");
     this.passClick = passClick;
 
-    setup(this);
+    setup.call(this);
 
     this.updatePosition();
     this.updateShape();
@@ -92,7 +103,6 @@
       case "canvas":
         this.element.style.left = this.getX() + "px";
         this.element.style.top = this.getY() +"px";
-        console.log(this.getX())
         break;
     }
   }
@@ -152,7 +162,6 @@
         this.element.setAttribute("y2", Number(this.element.getAttribute("y2")) + y);
         break;
       case "canvas":
-        console.log((this.element.style.left.split(["px"])[0]) + "px")
         this.element.style.left = (Number(this.element.style.left.split(["px"])[0]) + x) + "px";
         this.element.style.top = (Number(this.element.style.top.split(["px"])[0]) + y) + "px";
     }
