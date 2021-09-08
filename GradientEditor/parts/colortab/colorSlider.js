@@ -9,14 +9,33 @@ class ColorSlider extends Part{
     this.sliderId = sliderid++;
 
     this.setupLinearGradientDef();
-    
+
     this.addChild(new Part(this, "rect", 0, 0, [85, 15, 0]));
     this.children[0].element.style.fill = "url(#" + this.sliderId + this.colorType + ")";
     this.addChild(new Part(this, "line", 85, 0, [0, 15]));
+    this.addChild(new DragablePart(this, 'line', 0, 0, [0, 15], {
+      mouseMove: function(event) {
+        this.offset((event.offsetX - this.x), 0);
+
+        if (this.relativeX < 0) {
+          this.xSet(this.parent.x);
+        }
+
+        if (this.relativeX > 85) {
+          this.xSet(this.parent.x + 85);
+        }
+      },
+      setup: function() {
+        this.element.setAttribute("class", "selector");
+      }
+    }))
   }
 
   mouseMove(event) {
-    super.mouseMove(event);
+
+    if (Math.abs(event.offsetX - this.x) > 5) {
+      this.children[4].mouseMove.call(this.children[4], (event));
+    }
 
     this.children[0].updatePart();
   }

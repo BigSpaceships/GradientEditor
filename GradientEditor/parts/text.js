@@ -8,13 +8,11 @@ class TextNode extends Part {
   }
 
   updatePosition() {
-    this.element.setAttribute("x", this.getX());
-    this.element.setAttribute("y", this.getY());
-    //this.textNode.setAttribute("x", this.getX());
-    //this.textNode.setAttribute("y", this.getY());
+    this.element.setAttribute("x", this.y);
+    this.element.setAttribute("y", this.y);
   }
 
   updateShape() {
-    //this.textNode.nodeValue = this.shape[0];
+    this.element.nodeValue = this.shape[0];
   }
 }

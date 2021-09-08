@@ -35,8 +35,8 @@ class ColorTab extends DragablePart {
     this.addChild(new Part(this, "line", 0, 20, [300, 0]));
     this.addChild(new TextNode(this, "text", 5, 15, ["Color"]));
     this.addChild(new ColorSlider(this, 170, 35, "red"));
-    this.addChild(new ColorSlider(this, 170, 55, "green"));
-    this.addChild(new ColorSlider(this, 170, 75, "blue"));
+    this.addChild(new ColorSlider(this, 170, 60, "green"));
+    this.addChild(new ColorSlider(this, 170, 85, "blue"));
     
     this.red = 155;
     this.blue = 255;
@@ -44,8 +44,8 @@ class ColorTab extends DragablePart {
   }
 
   onmousedown(event, element) {
-    let x = event.x - this.getX();
-    let y = event.y - this.getY();
+    let x = event.x - this.x;
+    let y = event.y - this.y;
 
     if (y < 15) {
       currentObject = element;

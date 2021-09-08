@@ -27,3 +27,8 @@ html {
 canvas{
   position:absolute;
 }
+
+.selector{
+  stroke: #d9d93a;
+  stroke-width: 3px;
+}

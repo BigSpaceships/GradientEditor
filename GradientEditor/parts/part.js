@@ -4,26 +4,18 @@
  */
  class Part {
 
-  /**
-   * @returns the elements x position on the svg element
-   */
-  getX() {
-    if (this.parent == null) {
-      return Number(this.x);
-    }
-
-    return Number(this.x + this.parent.getX());
+  static defaultSettingsObject = {
+    mouseMove: function (event) {}, 
+    setup: function () {},
+    passClick: false
   }
 
-  /**
-   * @returns the elements y postition on the svg element
-   */
-  getY() {
-    if (this.parent == null) {
-      return Number(this.y);
-    }
+  get relativeX() {
+    return this.x - this.parent.x;
+  }
 
-    return Number(this.y + this.parent.getY());
+  get relativeY() {
+    return this.y - this.parent.y;
   }
 
   /**
@@ -48,7 +40,16 @@
    * @param {Function} setup function to call before we update the position and shape but after the element is created
    * @param {Boolean} passClick wather the element should pass its clicks onto the parent
    */
-  constructor(parent, type, x, y, shape, setup = function () {}, passClick = false) {
+  constructor(parent, type, x, y, shape, settingsObject = {}) {
+
+    Object.keys(Part.defaultSettingsObject).forEach((key) => {
+      if (!settingsObject.hasOwnProperty(key)) {
+        settingsObject[key] = Part.defaultSettingsObject[key];
+      }
+    })
+
+    this.settings = settingsObject;
+
     switch(type) {
       case "canvas":
         this.element = document.createElement("canvas")
@@ -56,6 +57,12 @@
       default:
         this.element = document.createElementNS("http://www.w3.org/2000/svg", type);
     }
+
+    if (parent != undefined) {
+      x += parent.x;
+      y += parent.y;
+    }
+
     this.x = x;
     this.y = y;
     this.parent = parent;
@@ -63,9 +70,8 @@
     this.type = type;
     this.shape = shape;
     this.element.setAttribute("class", "tab");
-    this.passClick = passClick;
 
-    setup.call(this);
+    settingsObject.setup.call(this);
 
     this.updatePosition();
     this.updateShape();
@@ -87,22 +93,42 @@
   }
 
   /**
+   * sets the x value of the part
+   * use this instead of part.x = x
+   * @param {Number} x the x value to set
+   */
+  xSet(x) {
+    this.x = x;
+    this.updatePosition();
+  }
+
+  /**
+   * sets the y value of the part
+   * use this instead of part.y = y
+   * @param {Number} y the y value to set
+   */
+  ySet(y) {
+    this.y = y;
+    this.updatePosition();
+  }
+  /**
    * updates the position of the element
    */
   updatePosition() {
     switch(this.type) {
       case "rect":
       case "text":
-        this.element.setAttribute("x", this.getX());
-        this.element.setAttribute("y", this.getY());
+        this.element.setAttribute("x", this.x);
+        this.element.setAttribute("y", this.y);
         break;
       case "line":
-        this.element.setAttribute("x1", this.getX());
-        this.element.setAttribute("y1", this.getY());
+        this.element.setAttribute("x1", this.x);
+        this.element.setAttribute("y1", this.y);
+        this.updateShape();
         break;
       case "canvas":
-        this.element.style.left = this.getX() + "px";
-        this.element.style.top = this.getY() +"px";
+        this.element.style.left = this.x + "px";
+        this.element.style.top = this.y +"px";
         break;
     }
   }
@@ -175,7 +201,7 @@
    * called when the element is clicked 
    */
   onmousedown(event, element) {
-    if (this.passClick) {
+    if (this.settings.passClick) {
       this.parent.onmousedown(event, element);
     } else {
       currentObject = element;
