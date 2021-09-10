@@ -9,10 +9,13 @@ class ColorSlider extends Part{
     this.sliderId = sliderid++;
 
     this.setupLinearGradientDef();
-
-    this.addChild(new Part(this, "rect", 0, 0, [85, 15, 0]));
-    this.children[0].element.style.fill = "url(#" + this.sliderId + this.colorType + ")";
-    this.addChild(new Part(this, "line", 85, 0, [0, 15]));
+    
+    
+    this.addChild(new Part(this, "rect", 0, 0, [85, 15, 0], {
+      setup: function setup() {
+        this.element.style.fill = "url(#" + this.parent.sliderId + this.parent.colorType + ")";
+      }
+    }));
     this.addChild(new DragablePart(this, 'line', 0, 0, [0, 15], {
       mouseMove: function(event) {
         this.offset((event.offsetX - this.x), 0);
@@ -29,6 +32,8 @@ class ColorSlider extends Part{
         this.element.setAttribute("class", "selector");
       }
     }))
+    this.addChild(new InputBox(this, 85, 1, [29, 13], {}))
+    this.addChild(new Part(this, "line", 85, 0, [0, 15]));
   }
 
   mouseMove(event) {

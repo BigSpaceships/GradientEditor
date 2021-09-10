@@ -4,7 +4,7 @@
  */
  class Part {
 
-  static defaultSettingsObject = {
+  defaultSettingsObject = {
     mouseMove: function (event) {}, 
     setup: function () {},
     passClick: false
@@ -42,9 +42,9 @@
    */
   constructor(parent, type, x, y, shape, settingsObject = {}) {
 
-    Object.keys(Part.defaultSettingsObject).forEach((key) => {
+    Object.keys(this.defaultSettingsObject).forEach((key) => {
       if (!settingsObject.hasOwnProperty(key)) {
-        settingsObject[key] = Part.defaultSettingsObject[key];
+        settingsObject[key] = this.defaultSettingsObject[key];
       }
     })
 
