@@ -9,8 +9,4 @@ class DragablePart extends Part {
     super(parent, type, x, y, shape, settingsObject);
     this.settings = settingsObject;
   }
-
-  mouseMove(event) {
-    this.settings.mouseMove.call(this, event);
-  }
 }

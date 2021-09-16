@@ -34,7 +34,7 @@ canvas{
 }
 
 .sliderTextBox{
-  font-size: 9px;
+  font-size: 11px;
   stroke: black;
   border-radius: 2px;
   stroke-width: 1px;
@@ -43,6 +43,7 @@ canvas{
   padding: 0px;
   border-style: none;
   display: grid;
+  text-align: center;
 }
 
 .sliderTextBox:focus {

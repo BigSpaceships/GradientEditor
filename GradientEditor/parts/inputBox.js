@@ -5,5 +5,19 @@ class InputBox extends ForeignObject {
 
     this.realElement.setAttribute("type", "text");
     this.realElement.setAttribute("class", "sliderTextBox");
+
+    this.realElement.style.pointerEvents = "none";
+  }
+
+  onmousedown(event, element) {
+    super.onmousedown(event, element);
+
+    this.realElement.style.pointerEvents = "auto";
+  }
+
+  onmouseup(event) {
+    super.onmouseup(event);
+
+    this.realElement.style.pointerEvents = "none";
   }
 }

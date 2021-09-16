@@ -19,6 +19,8 @@ class ColorSlider extends Part{
     this.addChild(new DragablePart(this, 'line', 0, 0, [0, 15], {
       mouseMove: function(event) {
         this.offset((event.offsetX - this.x), 0);
+        
+        console.log(this.x)
 
         if (this.relativeX < 0) {
           this.xSet(this.parent.x);
@@ -26,6 +28,18 @@ class ColorSlider extends Part{
 
         if (this.relativeX > 85) {
           this.xSet(this.parent.x + 85);
+        }
+        
+        switch (this.parent.colorType) {
+          case "red": 
+            this.parent.parent.red = this.relativeX * 3;
+            break;
+          case "blue":
+            this.parent.parent.blue = this.relativeX * 3;
+            break;
+          case "green":
+            this.parent.parent.green = this.relativeX * 3;
+            break;
         }
       },
       setup: function() {

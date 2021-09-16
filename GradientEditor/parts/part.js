@@ -71,6 +71,10 @@
     this.shape = shape;
     this.element.setAttribute("class", "tab");
 
+    this.key = uuidv4();
+    elements.set(this.key, this);
+    this.element.setAttribute("key", this.key);
+
     settingsObject.setup.call(this);
 
     this.updatePosition();
@@ -79,6 +83,10 @@
     let element = this;
     this.element.onmousedown = function(event) {
       element.onmousedown(event, element);
+    }
+
+    this.element.onmouseup = function(event) {
+      element.onmouseup.call(element, event);
     }
 
     this.element.part = this;
@@ -208,10 +216,20 @@
     }
   }
 
+  onmouseup(event) {
+    this.children.forEach(child => {
+      child.onmouseup(event);
+    })
+  }
+
   /**
    * called when the mouse moves after the element has been clicked on
    */
   mouseMove(event) {
+    //console.log(this)
+    this.settings.mouseMove.call(this, event);
+    //el = elements.get(this.getAttribute("key"));
+    //el.settingsObject.mouseMove.call(el, event);
   }
 
   /**
