@@ -89,7 +89,6 @@ class ColorTab extends DragablePart {
     
 
     this.sliders.forEach(slide => {
-      console.log(slide)
       slide.updateColors();
     });
   }

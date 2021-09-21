@@ -25,7 +25,16 @@ class ColorSlider extends Part{
         this.element.setAttribute("class", "tab sliderButton");
       },
       onmousedown: function() {
-        this.parent.parent[this.parent.colorType]++;
+        element = this;
+        element.parent.parent[element.parent.colorType]++;
+        element.intervalId = window.setTimeout(function () {
+          element.intervalId = window.setInterval(function () {
+            element.parent.parent[element.parent.colorType]++;
+          }, 15);
+        }, 250);
+      },
+      onmouseup: function() {
+        window.clearInterval(this.intervalId);
       }
     }));
     let index = this.children.length - 1;
@@ -37,7 +46,16 @@ class ColorSlider extends Part{
         this.element.setAttribute("class", "tab sliderButton");
       },
       onmousedown: function() {
-        this.parent.parent[this.parent.colorType]--;
+        element = this;
+        element.parent.parent[element.parent.colorType]--;
+        element.intervalId = window.setTimeout(function () {
+          element.intervalId = window.setInterval(function () {
+            element.parent.parent[element.parent.colorType]--;
+          }, 15);
+        }, 250);
+      },
+      onmouseup: function() {
+        window.clearInterval(this.intervalId);
       }
     }))
     index++;

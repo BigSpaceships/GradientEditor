@@ -8,7 +8,8 @@
     mouseMove: function (event) {}, 
     setup: function () {},
     passClick: false,
-    onmousedown: function(event) {}
+    onmousedown: function(event) {},
+    onmouseup: function(event) {}
   }
 
   get relativeX() {
@@ -95,7 +96,7 @@
     }
 
     this.element.onmouseup = function(event) {
-      element.onmouseup.call(element, event);
+      //element.onmouseup.call(element, event);
     }
 
     this.element.part = this;
@@ -219,7 +220,7 @@
    */
   onmousedown(event) {
     if (this.settings.passClick) {
-      this.parent.onmousedown.call(this, event);
+      this.parent.onmousedown.call(this.parent, event);
     } else {
       currentObject = this;
       this.settings.onmousedown.call(this, event);
@@ -230,6 +231,7 @@
     this.children.forEach(child => {
       child.onmouseup(event);
     })
+    this.settings.onmouseup.call(this, event);
   }
 
   /**

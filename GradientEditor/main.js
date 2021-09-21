@@ -18,6 +18,7 @@ var currentObject = undefined;
 
 window.onmouseup = function (event) {
   currentObject = undefined;
+  part1.onmouseup.call(part1, event);
 }
 
 window.onmousemove = function (event) {
