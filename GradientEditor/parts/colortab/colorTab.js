@@ -34,13 +34,15 @@ class ColorTab extends DragablePart {
 
     this.addChild(new Part(this, "line", 0, 20, [300, 0]));
     this.addChild(new TextNode(this, "text", 5, 15, ["Color"]));
-    this.addChild(new ColorSlider(this, 170, 35, "red"));
-    this.addChild(new ColorSlider(this, 170, 60, "green"));
-    this.addChild(new ColorSlider(this, 170, 85, "blue"));
+    this.addChild(new ColorSlider(this, 155, 35, "red"));
+    this.addChild(new ColorSlider(this, 155, 60, "green"));
+    this.addChild(new ColorSlider(this, 155, 85, "blue"));
     
-    this.red = 155;
-    this.blue = 255;
-    this.green = 255;
+    this.redVal = 255;
+    this.blueVal = 255;
+    this.greenVal = 255;
+
+    this.updateValues()
   }
 
   onmousedown(event, element) {
@@ -61,8 +63,34 @@ class ColorTab extends DragablePart {
   }
 
   updateValues() {
+    if (this.red < 0) {
+      this.red = 0;
+    }
+    
+    if (this.green < 0) {
+      this.green = 0;
+    }
+    
+    if (this.blue < 0) {
+      this.blue = 0;
+    }
+    
+    if (this.red > 255) {
+      this.red = 255;
+    }
+    
+    if (this.green > 255) {
+      this.green = 255;
+    }
+    
+    if (this.blue > 255) {
+      this.blue = 255;
+    }
+    
+
     this.sliders.forEach(slide => {
-      slide.updateGradient();
+      console.log(slide)
+      slide.updateColors();
     });
   }
 }

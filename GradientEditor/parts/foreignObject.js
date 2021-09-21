@@ -9,6 +9,8 @@ class ForeignObject extends Part {
     this.realElement = document.createElementNS("http://www.w3.org/1999/xhtml", type);
     this.element.appendChild(this.realElement);
 
+    this.realType = type;
+
     this.element.setAttribute("class", "");
   }
 

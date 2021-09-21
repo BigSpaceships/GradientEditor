@@ -1,3 +1,7 @@
+.sliderButton {
+  border-radius: 0px;
+}
+
 .tab {
   fill: #707070;
   stroke: black;
@@ -44,8 +48,13 @@ canvas{
   border-style: none;
   display: grid;
   text-align: center;
+  background-color: #d5d5d5;
 }
 
 .sliderTextBox:focus {
   outline: none;
+}
+
+line {
+  stroke-linecap: round;
 }

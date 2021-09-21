@@ -7,7 +7,8 @@
   defaultSettingsObject = {
     mouseMove: function (event) {}, 
     setup: function () {},
-    passClick: false
+    passClick: false,
+    onmousedown: function(event) {}
   }
 
   get relativeX() {
@@ -16,6 +17,14 @@
 
   get relativeY() {
     return this.y - this.parent.y;
+  }
+
+  set relativeX(x) {
+    this.xSet(x + this.parent.x);
+  }
+
+  set relativeY(y) {
+    this.ySet(y + this.parent.y);
   }
 
   /**
@@ -82,7 +91,7 @@
 
     let element = this;
     this.element.onmousedown = function(event) {
-      element.onmousedown(event, element);
+      element.onmousedown.call(element, event);
     }
 
     this.element.onmouseup = function(event) {
@@ -208,11 +217,12 @@
   /**
    * called when the element is clicked 
    */
-  onmousedown(event, element) {
+  onmousedown(event) {
     if (this.settings.passClick) {
-      this.parent.onmousedown(event, element);
+      this.parent.onmousedown.call(this, event);
     } else {
-      currentObject = element;
+      currentObject = this;
+      this.settings.onmousedown.call(this, event);
     }
   }
 
@@ -241,5 +251,26 @@
         this.shape[2]();
         break;
     }
+  }
+
+  /**
+   * 
+   * @param {String} type the type to match 
+   * @returns an array of the children of the element that match the given type
+   */
+  findChildrenByType(type) {
+    let matches = [];
+
+    this.children.forEach(child => {
+      if (child.type == type) {
+        matches.push(child);
+      } else if (child.type == "foreignObject") {
+        if (child.realType == type) {
+          matches.push(child);
+        } 
+      }
+    })
+
+    return matches;
   }
 }
