@@ -1,7 +1,3 @@
-.sliderButton {
-  border-radius: 0px;
-}
-
 .tab {
   fill: #707070;
   stroke: black;
@@ -57,4 +53,13 @@ canvas{
 
 line {
   stroke-linecap: round;
+}
+
+.noselect {
+  pointer-events: none;
+}
+
+.sliderButton {
+  border-radius: 0px;
+  fill: #d5d5d5;
 }

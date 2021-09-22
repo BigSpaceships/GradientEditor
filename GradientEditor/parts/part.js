@@ -9,7 +9,10 @@
     setup: function () {},
     passClick: false,
     onmousedown: function(event) {},
-    onmouseup: function(event) {}
+    onmouseup: function(event) {},
+    onmouseover: function(event) {},
+    onmouseleave: function(event) {},
+    classes: ["tab"]
   }
 
   get relativeX() {
@@ -79,7 +82,16 @@
     this.children = [];
     this.type = type;
     this.shape = shape;
-    this.element.setAttribute("class", "tab");
+
+    this.settings.classes.forEach(classToAdd => {
+      let currentClasses = this.element.getAttribute("class");
+      if (currentClasses == null) {
+        currentClasses = "";
+      } else {
+        currentClasses = currentClasses + " ";
+      }
+      this.element.setAttribute("class", currentClasses + classToAdd);
+    });
 
     this.key = uuidv4();
     elements.set(this.key, this);
@@ -88,7 +100,6 @@
     settingsObject.setup.call(this);
 
     this.updatePosition();
-    this.updateShape();
 
     let element = this;
     this.element.onmousedown = function(event) {
@@ -97,6 +108,14 @@
 
     this.element.onmouseup = function(event) {
       //element.onmouseup.call(element, event);
+    }
+
+    this.element.onmouseover = function(event) {
+      element.onmouseover.call(element, event);
+    }
+
+    this.element.onmouseleave = function (event) {
+      element.onmouseleave.call(element, event);
     }
 
     this.element.part = this;
@@ -108,6 +127,8 @@
       default:
         main.appendChild(this.element);
     }
+    
+    this.updateShape();
   }
 
   /**
@@ -160,9 +181,9 @@
         this.element.setAttribute("width", this.shape[0]);
         this.element.setAttribute("height", this.shape[1]);
 
-        let css = document.styleSheets[0].cssRules[0];
-        this.element.setAttribute("rx", css.style.getPropertyValue("border-radius"));
-        this.element.setAttribute("ry", css.style.getPropertyValue("border-radius"));
+        let css = getComputedStyle(this.element);
+        this.element.setAttribute("rx", css.getPropertyValue("border-radius"));
+        this.element.setAttribute("ry", css.getPropertyValue("border-radius"));
 
         break;
       case "line":
@@ -242,6 +263,14 @@
     this.settings.mouseMove.call(this, event);
     //el = elements.get(this.getAttribute("key"));
     //el.settingsObject.mouseMove.call(el, event);
+  }
+
+  onmouseover(event) {
+    this.settings.onmouseover.call(this, event);
+  }
+
+  onmouseleave(event) {
+    this.settings.onmouseleave.call(this, event);
   }
 
   /**

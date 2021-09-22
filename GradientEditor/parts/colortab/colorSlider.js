@@ -4,6 +4,14 @@ class ColorSlider extends Part{
 
     this.colorType = type;
 
+    switch (this.colorType) {
+      case "red":
+      case "green":
+      case "blue":
+        this.maxValue = 255;
+        break;
+    }
+
     let element = this;
 
     this.sliderId = sliderid++;
@@ -16,14 +24,31 @@ class ColorSlider extends Part{
         this.element.style.fill = "url(#" + this.parent.sliderId + this.parent.colorType + ")";
       }
     }));
-    this.addChild(new InputBox(this, 100, 1, [29, 13], {}))
-    this.addChild(new Part(this, "line", 85, 0, [0, 15]));
-    this.addChild(new Part(this, "line", 100, 0, [0, 15]));
+    this.addChild(new InputBox(this, 100, 1, [29, 13], {oninput: function () {
+      if (isNaN(this.realElement.value)) {
+        this.realElement.value = this.lastValue;
+      }
+
+      if (this.realElement.value == "") {
+        this.realElement.value = 0;
+      }
+
+      let number = Number(this.realElement.value);
+
+      if (number > this.parent.maxValue) {
+        number = Number(this.lastValue);
+      }
+
+      if (number < 0) {
+        number = 0;
+      }
+
+      this.parent.parent[this.parent.colorType] = number;
+    }}))
+    
     //buttons
     this.addChild(new Part(this, "rect", 85, 0, [15, 7.5], {
-      setup: function() {
-        this.element.setAttribute("class", "tab sliderButton");
-      },
+      classes: ["tab", "sliderButton"],
       onmousedown: function() {
         element = this;
         element.parent.parent[element.parent.colorType]++;
@@ -62,6 +87,8 @@ class ColorSlider extends Part{
     this.children[index].addChild(new Part(this.children[index], "line", 3, 2, [4.5, 3], {passClick: true}));
     this.children[index].addChild(new Part(this.children[index], "line", 7.5, 5, [4.5, -3], {passClick: true}));
 
+    this.addChild(new Part(this, "line", 85, 0, [0, 15]));
+    this.addChild(new Part(this, "line", 100, 0, [0, 15]));
     this.addChild(new DragablePart(this, 'line', 0, 0, [0, 15], {
       mouseMove: function(event) {
         this.offset((event.offsetX - this.x), 0);
